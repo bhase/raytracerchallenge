@@ -1,0 +1,6 @@
+[package]
+name = "raytracer_challenge"
+version = "0.1.0"
+authors = ["Benjamin Hase <benjamin.hase@web.de>"]
+
+[dependencies]
