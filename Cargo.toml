@@ -4,3 +4,10 @@ version = "0.1.0"
 authors = ["Benjamin Hase <benjamin.hase@web.de>"]
 
 [dependencies]
+
+[dev-dependencies]
+cucumber_rust = { version = "0.5.0", default-features = false }
+
+[[test]]
+name = "cucumber"
+harness = false
