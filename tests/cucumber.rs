@@ -1,3 +1,5 @@
+extern crate raytracer_challenge;
+
 #[macro_use]
 extern crate cucumber_rust;
 
