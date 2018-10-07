@@ -1,9 +1,17 @@
+#[macro_use]
 use support;
 use raytracer_challenge::tuple;
 
+define_str!(GIVEN_TUPLE, r"a := tuple\((", FLOAT!(), "), (", FLOAT!(), "), (", FLOAT!(), "), (", FLOAT!(), r")\)");
+
+define_str!(GIVEN_POINT, r"p := point\((", FLOAT!(), "), (", FLOAT!(), "), (", FLOAT!(), r")\)");
+
+const GIVEN_TUPLE_STEP: &'static str = GIVEN_TUPLE!();
+const GIVEN_POINT_STEP: &'static str = GIVEN_POINT!();
+
 // Any type that implements cucumber_rust::World + Default can be the world
 steps!(support::MyWorld => {
-    given regex r"a := tuple\(([+-]?\d+\.\d+), ([+-]?\d+\.\d+), ([+-]?\d+\.\d+), ([+-]?\d+\.\d+)\)"
+    given regex GIVEN_TUPLE_STEP
         (f64, f64, f64, f64) |world, x, y, z, w, step| {
             world.tuple = tuple::Tuple { x, y, z, w };
     };
@@ -31,5 +39,10 @@ steps!(support::MyWorld => {
         };
         assert_eq!(world.tuple.is_vector(), expected_result);
     };
+
+    given regex GIVEN_POINT_STEP
+        (f64, f64, f64) |world, x, y, z, step| {
+    };
+
 });
 
