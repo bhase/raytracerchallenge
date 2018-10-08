@@ -1,4 +1,4 @@
-#![macro_escape]
+#![macro_use]
 
 #![macro_export]
 // Define new macro-string with name $name assembled from arguments $arg

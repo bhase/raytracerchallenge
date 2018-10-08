@@ -1,7 +1,9 @@
 
 pub mod tuple {
     const POINT: f64 = 1.0;
+    const VECTOR: f64 = 0.0;
 
+    #[derive(PartialEq, Debug)]
     pub struct Tuple {
         pub x: f64,
         pub y: f64,
@@ -15,6 +17,23 @@ pub mod tuple {
         }
         pub fn is_vector(&self) -> bool {
             !self.is_point()
+        }
+    }
+
+    pub fn point(x: f64, y: f64, z: f64) -> Tuple {
+        Tuple {
+            x: x,
+            y: y,
+            z: z,
+            w: POINT
+        }
+    }
+    pub fn vector(x: f64, y: f64, z: f64) -> Tuple {
+        Tuple {
+            x: x,
+            y: y,
+            z: z,
+            w: VECTOR
         }
     }
 }
