@@ -22,17 +22,17 @@ pub mod tuple {
 
     pub fn point(x: f64, y: f64, z: f64) -> Tuple {
         Tuple {
-            x: x,
-            y: y,
-            z: z,
+            x,
+            y,
+            z,
             w: POINT
         }
     }
     pub fn vector(x: f64, y: f64, z: f64) -> Tuple {
         Tuple {
-            x: x,
-            y: y,
-            z: z,
+            x,
+            y,
+            z,
             w: VECTOR
         }
     }
