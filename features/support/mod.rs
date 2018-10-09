@@ -1,6 +1,5 @@
 #![macro_use]
 
-#![macro_export]
 // Define new macro-string with name $name assembled from arguments $arg
 macro_rules! define_str {
     ($name: ident, $($arg: expr), +)

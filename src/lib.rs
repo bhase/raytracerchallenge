@@ -3,7 +3,7 @@ pub mod tuple {
     const POINT: f64 = 1.0;
     const VECTOR: f64 = 0.0;
 
-    #[derive(PartialEq, Debug)]
+    #[derive(PartialEq, PartialOrd, Debug)]
     pub struct Tuple {
         pub x: f64,
         pub y: f64,

@@ -1,4 +1,3 @@
-#[macro_use]
 use support;
 use raytracer_challenge::tuple;
 
@@ -20,10 +19,10 @@ const GIVEN_VECTOR: &'static str = GIVEN_VECTOR_STEP!();
 // Any type that implements cucumber_rust::World + Default can be the world
 steps!(support::MyWorld => {
     given regex GIVEN_TUPLE
-        (f64, f64, f64, f64) |world, x, y, z, w, step| {
+        (f64, f64, f64, f64) |world, x, y, z, w, _step| {
             world.tuple = tuple::Tuple { x, y, z, w };
     };
-    then regex THEN_TUPLE_ELEMENT (char, f64) |world, part, value, step| {
+    then regex THEN_TUPLE_ELEMENT (char, f64) |world, part, value, _step| {
         let v = match part {
             'x' => world.tuple.x,
             'y' => world.tuple.y,
@@ -33,14 +32,14 @@ steps!(support::MyWorld => {
         };
         assert_eq!(value, v);
     };
-    then regex r"a is (.*)a point" |world, not_a, step| {
+    then regex r"a is (.*)a point" |world, not_a, _step| {
         let expected_result = match not_a[1].as_str() {
             "" => true,
             _ => false,
         };
         assert_eq!(world.tuple.is_point(), expected_result);
     };
-    then regex r"a is (.*)a vector" |world, not_a, step| {
+    then regex r"a is (.*)a vector" |world, not_a, _step| {
         let expected_result = match not_a[1].as_str() {
             "" => true,
             _ => false,
@@ -49,17 +48,17 @@ steps!(support::MyWorld => {
     };
 
     given regex GIVEN_POINT
-        (f64, f64, f64) |world, x, y, z, step| {
+        (f64, f64, f64) |world, x, y, z, _step| {
             world.tuple = tuple::point(x, y, z);
     };
 
     then regex THEN_TUPLE_VECTORPOINT
-        (f64, f64, f64, f64) |world, x, y, z, w, step| {
+        (f64, f64, f64, f64) |world, x, y, z, w, _step| {
             assert_eq!(world.tuple, tuple::Tuple { x, y, z, w });
     };
 
     given regex GIVEN_VECTOR
-        (f64, f64, f64) |world, x, y, z, step| {
+        (f64, f64, f64) |world, x, y, z, _step| {
             world.tuple = tuple::vector(x, y, z);
     };
 });
