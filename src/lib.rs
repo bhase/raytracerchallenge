@@ -1,5 +1,6 @@
 
 pub mod tuple {
+    use std::ops::Add;
     const POINT: f64 = 1.0;
     const VECTOR: f64 = 0.0;
 
@@ -17,6 +18,20 @@ pub mod tuple {
         }
         pub fn is_vector(&self) -> bool {
             !self.is_point()
+        }
+
+    }
+
+    impl<'a, 'b> Add<&'b Tuple> for &'a Tuple {
+        type Output = Tuple;
+
+        fn add(self, other: &'b Tuple) -> Tuple {
+            Tuple {
+                x: self.x + other.x,
+                y: self.y + other.y,
+                z: self.z + other.z,
+                w: self.w + other.w,
+            }
         }
     }
 
