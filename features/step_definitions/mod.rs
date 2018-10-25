@@ -8,7 +8,7 @@ define_str!(VECTOR, r"vector\((", FLOAT!(), "), (", FLOAT!(), "), (", FLOAT!(), 
 define_str!(GIVEN_TUPLE_STEP, r"a(\d?) := ", TUPLE!());
 const GIVEN_TUPLE: &'static str = GIVEN_TUPLE_STEP!();
 
-define_str!(GIVEN_POINT_STEP, r"p := ", POINT!());
+define_str!(GIVEN_POINT_STEP, r"p(\d?) := ", POINT!());
 const GIVEN_POINT: &'static str = GIVEN_POINT_STEP!();
 
 define_str!(THEN_TUPLE_ELEMENT_STEP, r"a\.([xyzw]) = (", FLOAT!(), ")");
@@ -22,6 +22,9 @@ const GIVEN_VECTOR: &'static str = GIVEN_VECTOR_STEP!();
 
 define_str!(ADD_RESULT_STEP, r"a1 \+ a2 = ", TUPLE!());
 const ADD_RESULT: &'static str = ADD_RESULT_STEP!();
+
+define_str!(SUB_VEC_FROM_POINT_STEP, r"p1 - p2 = ", VECTOR!());
+const SUB_VEC_FROM_POINT: &'static str = SUB_VEC_FROM_POINT_STEP!();
 
 // Any type that implements cucumber_rust::World + Default can be the world
 steps!(support::MyWorld => {
@@ -59,8 +62,12 @@ steps!(support::MyWorld => {
     };
 
     given regex GIVEN_POINT
-        (f64, f64, f64) |world, x, y, z, _step| {
-            world.tuple = tuple::point(x, y, z);
+        (String, f64, f64, f64) |world, m, x, y, z, _step| {
+            match m.as_str() {
+                "" | "1" => world.tuple = tuple::point(x, y, z),
+                "2" => world.other_tuple = tuple::point(x, y, z),
+                _ => assert_eq!(false, true)
+            };
     };
 
     then regex THEN_TUPLE_VECTORPOINT
@@ -79,5 +86,10 @@ steps!(support::MyWorld => {
         assert_eq!(result, tuple::Tuple { x, y, z, w });
     };
 
+    then regex SUB_VEC_FROM_POINT
+        (f64, f64, f64) |world, x, y, z, _step| {
+        let result = &world.tuple - &world.other_tuple;
+        assert_eq!(result, tuple::vector(x, y, z));
+    };
 });
 
