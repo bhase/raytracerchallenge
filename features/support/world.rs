@@ -7,7 +7,8 @@ pub struct MyWorld {
     pub t: tuple::Tuple,
     pub p1: tuple::Tuple,
     pub p2: tuple::Tuple,
-    pub v: tuple::Tuple,
+    pub v1: tuple::Tuple,
+    pub v2: tuple::Tuple,
 }
 
 impl cucumber_rust::World for MyWorld {}
@@ -18,7 +19,8 @@ impl std::default::Default for MyWorld {
             t: tuple::Tuple { x:0.0, y:0.0, z:0.0, w:1.0 },
             p1: tuple::Tuple { x:0.0, y:0.0, z:0.0, w:1.0 },
             p2: tuple::Tuple { x:0.0, y:0.0, z:0.0, w:1.0 },
-            v: tuple::Tuple { x:0.0, y:0.0, z:0.0, w:1.0 }
+            v1: tuple::Tuple { x:0.0, y:0.0, z:0.0, w:1.0 },
+            v2: tuple::Tuple { x:0.0, y:0.0, z:0.0, w:1.0 },
         }
     }
 }
