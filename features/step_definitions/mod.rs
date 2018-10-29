@@ -14,7 +14,7 @@ const GIVEN_POINT: &'static str = GIVEN_POINT_STEP!();
 define_str!(THEN_TUPLE_ELEMENT_STEP, r"a\.([xyzw]) = (", FLOAT!(), ")");
 const THEN_TUPLE_ELEMENT: &'static str = THEN_TUPLE_ELEMENT_STEP!();
 
-define_str!(THEN_TUPLE_VECTORPOINT_STEP, r"[pv] = ", TUPLE!());
+define_str!(THEN_TUPLE_VECTORPOINT_STEP, r"([pv]) = ", TUPLE!());
 const THEN_TUPLE_VECTORPOINT: &'static str = THEN_TUPLE_VECTORPOINT_STEP!();
 
 define_str!(GIVEN_VECTOR_STEP, r"v := ", VECTOR!());
@@ -31,17 +31,18 @@ steps!(support::MyWorld => {
     given regex GIVEN_TUPLE
         (String, f64, f64, f64, f64) |world, m, x, y, z, w, _step| {
             match m.as_str() {
-                "" | "1" => world.tuple = tuple::Tuple { x, y, z, w },
-                "2" => world.other_tuple = tuple::Tuple { x, y, z, w },
+                "" => world.t = tuple::Tuple { x, y, z, w },
+                "1" => world.p1 = tuple::Tuple { x, y, z, w },
+                "2" => world.p2 = tuple::Tuple { x, y, z, w },
                 _ => assert_eq!(false, true)
             };
     };
     then regex THEN_TUPLE_ELEMENT (char, f64) |world, part, value, _step| {
         let v = match part {
-            'x' => world.tuple.x,
-            'y' => world.tuple.y,
-            'z' => world.tuple.z,
-            'w' => world.tuple.w,
+            'x' => world.t.x,
+            'y' => world.t.y,
+            'z' => world.t.z,
+            'w' => world.t.w,
              _  => 0.0,
         };
         assert_eq!(value, v);
@@ -51,44 +52,47 @@ steps!(support::MyWorld => {
             "" => true,
             _ => false,
         };
-        assert_eq!(world.tuple.is_point(), expected_result);
+        assert_eq!(world.t.is_point(), expected_result);
     };
     then regex r"a is (.*)a vector" |world, not_a, _step| {
         let expected_result = match not_a[1].as_str() {
             "" => true,
             _ => false,
         };
-        assert_eq!(world.tuple.is_vector(), expected_result);
+        assert_eq!(world.t.is_vector(), expected_result);
     };
 
     given regex GIVEN_POINT
         (String, f64, f64, f64) |world, m, x, y, z, _step| {
             match m.as_str() {
-                "" | "1" => world.tuple = tuple::point(x, y, z),
-                "2" => world.other_tuple = tuple::point(x, y, z),
+                "" | "1" => world.p1 = tuple::point(x, y, z),
+                "2" => world.p2 = tuple::point(x, y, z),
                 _ => assert_eq!(false, true)
             };
     };
 
     then regex THEN_TUPLE_VECTORPOINT
-        (f64, f64, f64, f64) |world, x, y, z, w, _step| {
-            assert_eq!(world.tuple, tuple::Tuple { x, y, z, w });
+        (String, f64, f64, f64, f64) |world, pv, x, y, z, w, _step| {
+            match pv.as_str() {
+                "v" => assert_eq!(world.v, tuple::Tuple { x, y, z, w }),
+                _ => assert_eq!(world.p1, tuple::Tuple { x, y, z, w })
+            };
     };
 
     given regex GIVEN_VECTOR
         (f64, f64, f64) |world, x, y, z, _step| {
-            world.tuple = tuple::vector(x, y, z);
+            world.v = tuple::vector(x, y, z);
     };
 
     then regex ADD_RESULT
         (f64, f64, f64, f64) |world, x, y, z, w, _step| {
-        let result = &world.tuple + &world.other_tuple;
+        let result = &world.p1 + &world.p2;
         assert_eq!(result, tuple::Tuple { x, y, z, w });
     };
 
     then regex SUB_VEC_FROM_POINT
         (f64, f64, f64) |world, x, y, z, _step| {
-        let result = &world.tuple - &world.other_tuple;
+        let result = &world.p1 - &world.p2;
         assert_eq!(result, tuple::vector(x, y, z));
     };
 });
