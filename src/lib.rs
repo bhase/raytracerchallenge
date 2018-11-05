@@ -1,6 +1,6 @@
 
 pub mod tuple {
-    use std::ops::{Add, Sub};
+    use std::ops::{Add, Sub, Neg};
     const POINT: f64 = 1.0;
     const VECTOR: f64 = 0.0;
 
@@ -48,6 +48,18 @@ pub mod tuple {
         }
     }
 
+    impl<'a> Neg for &'a Tuple {
+        type Output = Tuple;
+
+        fn neg(self) -> Tuple {
+            Tuple {
+                x: -self.x,
+                y: -self.y,
+                z: -self.z,
+                w: -self.w,
+            }
+        }
+    }
     pub fn point(x: f64, y: f64, z: f64) -> Tuple {
         Tuple {
             x,

@@ -32,6 +32,9 @@ const SUB_POINT_FROM_VECTOR: &'static str = SUB_POINT_FROM_VECTOR_STEP!();
 define_str!(SUB_VECTOR_FROM_VECTOR_STEP, r"(?:zero|v1) - v2 = ", VECTOR!());
 const SUB_VECTOR_FROM_VECTOR: &'static str = SUB_VECTOR_FROM_VECTOR_STEP!();
 
+define_str!(NEGATE_TUPLE_STEP, r"-a = ", TUPLE!());
+const NEGATE_TUPLE: &'static str = NEGATE_TUPLE_STEP!();
+
 // Any type that implements cucumber_rust::World + Default can be the world
 steps!(support::MyWorld => {
     given regex GIVEN_TUPLE
@@ -117,5 +120,12 @@ steps!(support::MyWorld => {
         let result = &world.v1 - &world.v2;
         assert_eq!(result, tuple::vector(x, y, z));
     };
+
+    then regex NEGATE_TUPLE
+        (f64, f64, f64, f64) |world, x, y, z, w, _step| {
+        let result = -&world.t;
+        assert_eq!(result, tuple::Tuple { x, y, z, w });
+    };
+
 });
 
