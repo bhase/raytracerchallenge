@@ -48,8 +48,8 @@ Scenario: Subtracting two vectors
 
 Scenario: Subtracting a vector from the zero vector
   Given zero := vector(0, 0, 0)
-    And v := vector(1, -2, 3)
-  Then zero - v = vector(-1, 2, -3)
+    And v2 := vector(1, -2, 3)
+  Then zero - v2 = vector(-1, 2, -3)
 
 Scenario: Negating a tuple
   Given a := tuple(1, -2, 3, -4)
