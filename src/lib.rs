@@ -4,7 +4,7 @@ pub mod tuple {
     const POINT: f64 = 1.0;
     const VECTOR: f64 = 0.0;
 
-    #[derive(PartialEq, PartialOrd, Debug)]
+    #[derive(Clone, Copy, PartialEq, PartialOrd, Debug)]
     pub struct Tuple {
         pub x: f64,
         pub y: f64,
@@ -34,11 +34,35 @@ pub mod tuple {
             }
         }
     }
+    impl Add<Tuple> for Tuple {
+        type Output = Tuple;
+
+        fn add(self, other: Tuple) -> Tuple {
+            Tuple {
+                x: self.x + other.x,
+                y: self.y + other.y,
+                z: self.z + other.z,
+                w: self.w + other.w,
+            }
+        }
+    }
 
     impl<'a, 'b> Sub<&'b Tuple> for &'a Tuple {
         type Output = Tuple;
 
         fn sub(self, other: &'b Tuple) -> Tuple {
+            Tuple {
+                x: self.x - other.x,
+                y: self.y - other.y,
+                z: self.z - other.z,
+                w: self.w - other.w,
+            }
+        }
+    }
+    impl Sub<Tuple> for Tuple {
+        type Output = Tuple;
+
+        fn sub(self, other: Tuple) -> Tuple {
             Tuple {
                 x: self.x - other.x,
                 y: self.y - other.y,
@@ -60,6 +84,19 @@ pub mod tuple {
             }
         }
     }
+    impl Neg for Tuple {
+        type Output = Tuple;
+
+        fn neg(self) -> Tuple {
+            Tuple {
+                x: -self.x,
+                y: -self.y,
+                z: -self.z,
+                w: -self.w,
+            }
+        }
+    }
+
     pub fn point(x: f64, y: f64, z: f64) -> Tuple {
         Tuple {
             x,

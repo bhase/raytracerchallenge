@@ -101,6 +101,7 @@ steps!(support::MyWorld => {
         (f64, f64, f64, f64) |world, x, y, z, w, _step| {
         let result = &world.p1 + &world.p2;
         assert_eq!(result, tuple::Tuple { x, y, z, w });
+        assert_eq!(world.p1 + world.p2, tuple::Tuple { x, y, z, w });
     };
 
     then regex SUB_POINT_FROM_POINT
@@ -111,8 +112,11 @@ steps!(support::MyWorld => {
 
     then regex SUB_POINT_FROM_VECTOR
         (f64, f64, f64) |world, x, y, z, _step| {
+        // as reference
         let result = &world.p1 - &world.v1;
         assert_eq!(result, tuple::point(x, y, z));
+        // and as copy
+        assert_eq!(world.p1 - world.v1, tuple::point(x, y, z));
     };
 
     then regex SUB_VECTOR_FROM_VECTOR
@@ -123,8 +127,11 @@ steps!(support::MyWorld => {
 
     then regex NEGATE_TUPLE
         (f64, f64, f64, f64) |world, x, y, z, w, _step| {
-        let result = -&world.t;
-        assert_eq!(result, tuple::Tuple { x, y, z, w });
+        // as reference
+        assert_eq!(-&world.t, tuple::Tuple { x, y, z, w });
+        // and as copy
+        assert_eq!(-world.t, tuple::Tuple { x, y, z, w });
+        // and as copy
     };
 
 });
