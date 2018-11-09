@@ -35,6 +35,9 @@ const SUB_VECTOR_FROM_VECTOR: &'static str = SUB_VECTOR_FROM_VECTOR_STEP!();
 define_str!(NEGATE_TUPLE_STEP, r"-a = ", TUPLE!());
 const NEGATE_TUPLE: &'static str = NEGATE_TUPLE_STEP!();
 
+define_str!(MULTIPLY_SCALAR_TUPLE_STEP, r"a \* (", FLOAT!(), ") = ", TUPLE!());
+const MULTIPLY_SCALAR_TUPLE: &'static str = MULTIPLY_SCALAR_TUPLE_STEP!();
+
 // Any type that implements cucumber_rust::World + Default can be the world
 steps!(support::MyWorld => {
     given regex GIVEN_TUPLE
@@ -134,5 +137,10 @@ steps!(support::MyWorld => {
         // and as copy
     };
 
+    then regex MULTIPLY_SCALAR_TUPLE
+        (f64, f64, f64, f64, f64) |world, s, x, y, z, w, _step| {
+        assert_eq!(&world.t * s, tuple::Tuple { x, y, z, w });
+        assert_eq!(world.t * s, tuple::Tuple { x, y, z, w });
+     };
 });
 

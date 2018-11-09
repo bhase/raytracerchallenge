@@ -1,6 +1,6 @@
 
 pub mod tuple {
-    use std::ops::{Add, Sub, Neg};
+    use std::ops::{Add, Sub, Neg, Mul};
     const POINT: f64 = 1.0;
     const VECTOR: f64 = 0.0;
 
@@ -93,6 +93,31 @@ pub mod tuple {
                 y: -self.y,
                 z: -self.z,
                 w: -self.w,
+            }
+        }
+    }
+
+    impl<'a> Mul<f64> for &'a Tuple {
+        type Output = Tuple;
+
+        fn mul(self, other: f64) -> Tuple {
+            Tuple {
+                x: self.x * other,
+                y: self.y * other,
+                z: self.z * other,
+                w: self.w * other,
+            }
+        }
+    }
+    impl Mul<f64> for Tuple {
+        type Output = Tuple;
+
+        fn mul(self, other: f64) -> Tuple {
+            Tuple {
+                x: self.x * other,
+                y: self.y * other,
+                z: self.z * other,
+                w: self.w * other,
             }
         }
     }
