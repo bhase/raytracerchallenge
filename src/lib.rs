@@ -1,6 +1,6 @@
 
 pub mod tuple {
-    use std::ops::{Add, Sub, Neg, Mul};
+    use std::ops::{Add, Sub, Neg, Mul, Div};
     const POINT: f64 = 1.0;
     const VECTOR: f64 = 0.0;
 
@@ -118,6 +118,31 @@ pub mod tuple {
                 y: self.y * other,
                 z: self.z * other,
                 w: self.w * other,
+            }
+        }
+    }
+
+    impl<'a> Div<f64> for &'a Tuple {
+        type Output = Tuple;
+
+        fn div(self, other: f64) -> Tuple {
+            Tuple {
+                x: self.x / other,
+                y: self.y / other,
+                z: self.z / other,
+                w: self.w / other,
+            }
+        }
+    }
+    impl Div<f64> for Tuple {
+        type Output = Tuple;
+
+        fn div(self, other: f64) -> Tuple {
+            Tuple {
+                x: self.x / other,
+                y: self.y / other,
+                z: self.z / other,
+                w: self.w / other,
             }
         }
     }
