@@ -20,6 +20,10 @@ pub mod tuple {
             !self.is_point()
         }
 
+        pub fn magnitude(&self) -> f64 {
+            let sum = self.x.powi(2) + self.y.powi(2) + self.z.powi(2) + self.w.powi(2);
+            sum.sqrt()
+        }
     }
 
     impl<'a, 'b> Add<&'b Tuple> for &'a Tuple {

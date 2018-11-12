@@ -41,6 +41,12 @@ const MULTIPLY_SCALAR_TUPLE: &'static str = MULTIPLY_SCALAR_TUPLE_STEP!();
 define_str!(DIVIDE_SCALAR_TUPLE_STEP, r"a / (", FLOAT!(), ") = ", TUPLE!());
 const DIVIDE_SCALAR_TUPLE: &'static str = DIVIDE_SCALAR_TUPLE_STEP!();
 
+define_str!(MAGNITUDE_STEP, r"magnitude\(v\) = (", FLOAT!(), ")");
+const MAGNITUDE: &'static str = MAGNITUDE_STEP!();
+
+define_str!(MAGNITUDE_SQRT_STEP, "magnitude(v) = √14");
+const MAGNITUDE_SQRT: &'static str = MAGNITUDE_SQRT_STEP!();
+
 // Any type that implements cucumber_rust::World + Default can be the world
 steps!(support::MyWorld => {
     given regex GIVEN_TUPLE
@@ -150,6 +156,16 @@ steps!(support::MyWorld => {
         (f64, f64, f64, f64, f64) |world, s, x, y, z, w, _step| {
         assert_eq!(&world.t / s, tuple::Tuple { x, y, z, w });
         assert_eq!(world.t / s, tuple::Tuple { x, y, z, w });
+    };
+
+    then regex MAGNITUDE
+        (f64) |world, m, _step| {
+        assert_eq!(world.v1.magnitude(), m);
+    };
+
+    then MAGNITUDE_SQRT |world, _step| {
+        let x:f64 = 14.0;
+        assert_eq!(world.v1.magnitude(), x.sqrt());
     };
 });
 
