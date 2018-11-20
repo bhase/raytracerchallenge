@@ -24,6 +24,10 @@ pub mod tuple {
             let sum = self.x.powi(2) + self.y.powi(2) + self.z.powi(2) + self.w.powi(2);
             sum.sqrt()
         }
+        pub fn normalize(&self) -> Tuple {
+            let magnitude = self.magnitude();
+            vector(self.x / magnitude, self.y / magnitude, self.z / magnitude)
+        }
     }
 
     impl<'a, 'b> Add<&'b Tuple> for &'a Tuple {

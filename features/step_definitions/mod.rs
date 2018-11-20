@@ -47,6 +47,9 @@ const MAGNITUDE: &'static str = MAGNITUDE_STEP!();
 define_str!(MAGNITUDE_SQRT_STEP, "magnitude(v) = √14");
 const MAGNITUDE_SQRT: &'static str = MAGNITUDE_SQRT_STEP!();
 
+define_str!(NORAMLIZE_STEP, r"normalize\(v\) =((?: approximately)? )", VECTOR!());
+const NORMALIZE: &'static str = NORAMLIZE_STEP!();
+
 // Any type that implements cucumber_rust::World + Default can be the world
 steps!(support::MyWorld => {
     given regex GIVEN_TUPLE
@@ -161,6 +164,19 @@ steps!(support::MyWorld => {
     then regex MAGNITUDE
         (f64) |world, m, _step| {
         assert_eq!(world.v1.magnitude(), m);
+    };
+
+    then regex NORMALIZE
+        (String, f64, f64, f64) |world, approx, x, y, z, _step| {
+        if approx.trim() != "" {
+            //assert_eq!(world.v1.normalize(), tuple::vector(x, y, z));
+            let v = world.v1.normalize();
+            assert_eq!(x, ((v.x * 100000.0).trunc() / 100000.0));
+            assert_eq!(y, ((v.y * 100000.0).trunc() / 100000.0));
+            assert_eq!(z, ((v.z * 100000.0).trunc() / 100000.0));
+        } else {
+            assert_eq!(world.v1.normalize(), tuple::vector(x, y, z));
+        }
     };
 
     then MAGNITUDE_SQRT |world, _step| {
